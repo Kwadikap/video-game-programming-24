@@ -1,0 +1,6 @@
+# compiled class files
+*.class
+
+# Package files
+*.jar
+*.zip

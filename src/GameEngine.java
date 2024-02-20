@@ -85,11 +85,11 @@ public class GameEngine extends Applet implements Runnable, KeyListener, MouseLi
         pen.drawImage(water, 490, 630, 100, 75, null);
         pen.drawImage(water, 590, 630, 100, 75, null);
 
-        pen.drawImage(land2, 0, 600, 200, 200, null);
-        pen.drawImage(land3, 200, 600, 200, 200, null);
-        pen.drawImage(land1, 600, 600, 200, 200, null);
-        pen.drawImage(land2, 800, 600, 200, 200, null);
-        pen.drawImage(land2, 1000, 600, 200, 200, null);
+        pen.drawImage(land2, 0, 600, 200, 300, null);
+        pen.drawImage(land3, 200, 600, 200, 300, null);
+        pen.drawImage(land1, 600, 600, 200, 300, null);
+        pen.drawImage(land2, 800, 600, 200, 300, null);
+        pen.drawImage(land2, 1000, 600, 200, 300, null);
 
         player1.draw(pen);
 

@@ -1,7 +1,15 @@
 import java.awt.*;
 
 public class Rect {
-    int x, y, w, h, old_x, old_y;
+    int x;
+    int y;
+
+    int w;
+    int h;
+
+    int old_x;
+    int old_y;
+
     boolean held = false;
 
     public Rect(int x, int y, int w, int h) throws IllegalArgumentException {

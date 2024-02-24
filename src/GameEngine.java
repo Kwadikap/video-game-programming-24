@@ -1,4 +1,9 @@
 
+/*
+ * <applet code="GameEngine" width=1500 height=920>
+ * </applet>
+ */
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -9,27 +14,25 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
 public class GameEngine extends Applet implements Runnable, KeyListener, MouseListener, MouseMotionListener {
-    Image background = Toolkit.getDefaultToolkit().getImage("BG.png");
-    Image land1 = Toolkit.getDefaultToolkit().getImage("1.png");
-    Image land2 = Toolkit.getDefaultToolkit().getImage("2.png");
-    Image land3 = Toolkit.getDefaultToolkit().getImage("3.png");
-    Image water = Toolkit.getDefaultToolkit().getImage("17.png");
-    Image water2 = Toolkit.getDefaultToolkit().getImage("18.png");
-    int mouseX, mouseY;
+    int mouseX = -1;
+    int mouseY = -1;
 
     int moveSpeed = 10;
 
-    boolean up_pressed, down_pressed, left_pressed, right_pressed = false;
+    boolean up_pressed = false;
+    boolean down_pressed = false;
+    boolean left_pressed = false;
+    boolean right_pressed = false;
 
-    Rect player1 = new Rect(600, 100, 30, 30);
+    Image offScreenImg;
+    Graphics offScreenPen;
 
-    ResizableRect[] walls = {
-            new ResizableRect(200, 200, 100, 100),
-            new ResizableRect(200, 400, 100, 100),
-            new ResizableRect(200, 600, 100, 100),
-    };
+    Sprite player = new Sprite("player", 100, 100, 5, 15);
 
     public void init() {
+        offScreenImg = createImage(1920, 1200);
+        offScreenPen = offScreenImg.getGraphics();
+
         addKeyListener(this);
         requestFocus();
 
@@ -46,18 +49,13 @@ public class GameEngine extends Applet implements Runnable, KeyListener, MouseLi
         // Game loop
         while (true) {
             if (up_pressed)
-                player1.moveUp(moveSpeed);
+                player.moveUp(moveSpeed);
             if (down_pressed)
-                player1.moveDown(moveSpeed);
+                player.moveDown(moveSpeed);
             if (left_pressed)
-                player1.moveLeft(moveSpeed);
+                player.moveLeft(moveSpeed);
             if (right_pressed)
-                player1.moveRight(moveSpeed);
-
-            for (ResizableRect rect : walls) {
-                if (player1.overlaps(rect))
-                    player1.pushOutOf(rect);
-            }
+                player.moveRight(moveSpeed);
 
             repaint();
 
@@ -71,32 +69,17 @@ public class GameEngine extends Applet implements Runnable, KeyListener, MouseLi
     }
 
     public void update(Graphics pen) {
-        pen.clearRect(0, 0, 2560, 1600);
+        offScreenPen.clearRect(0, 0, 1920, 1200);
 
-        paint(pen);
+        paint(offScreenPen);
+
+        pen.drawImage(offScreenImg, 0, 0, null);
+
     }
 
     public void paint(Graphics pen) {
-        pen.setColor(Color.BLACK);
-
-        pen.drawImage(background, 0, 0, 1500, 900, null);
-        pen.drawImage(water2, 370, 700, 450, 175, null);
-        pen.drawImage(water, 390, 630, 100, 75, null);
-        pen.drawImage(water, 490, 630, 100, 75, null);
-        pen.drawImage(water, 590, 630, 100, 75, null);
-
-        pen.drawImage(land2, 0, 600, 200, 300, null);
-        pen.drawImage(land3, 200, 600, 200, 300, null);
-        pen.drawImage(land1, 600, 600, 200, 300, null);
-        pen.drawImage(land2, 800, 600, 200, 300, null);
-        pen.drawImage(land2, 1000, 600, 200, 300, null);
-
-        player1.draw(pen);
-
-        for (ResizableRect rect : walls) {
-            rect.draw(pen);
-        }
-
+        // draw player
+        player.draw(pen);
     }
 
     @SuppressWarnings("static-access")
@@ -183,7 +166,3 @@ public class GameEngine extends Applet implements Runnable, KeyListener, MouseLi
 
     }
 }
-/*
- * <applet code="GameEngine" width=1500 height=920>
- * </applet>
- */
